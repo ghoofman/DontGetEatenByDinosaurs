@@ -21,6 +21,10 @@ void ApplicationInit() {
 	mainWindow.Init(NULL, OPwindowParameters("Main Window", false, 1280, 720));
 
 	OPrenderInit(&mainWindow);
+	OPGAMEPADS.SetDeadzones(0.2f);
+	OPVISUALDEBUGINFO.Init();
+
+	OPfmodInit();
 
 	OPgameState::Change(&GS_EXAMPLE);
 }
@@ -30,6 +34,9 @@ OPint ApplicationUpdate(OPtimer* timer) {
 		// Window received an exit request
 		return 1;
 	}
+	OPCMAN.Update(timer);
+	OPfmodUpdate();
+	OPVISUALDEBUGINFO.Update(timer);
 
 	OPinputSystemUpdate(timer);
 	if (OPKEYBOARD.WasPressed(OPkeyboardKey::ESCAPE)) return 1;
